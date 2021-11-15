@@ -53,7 +53,7 @@ function App() {
   );
 }
 
-function FullCart({count,setCount}){
+function FullCart({count,setCount}){                                           //full cart button at top 
  
   return <button className='btn btn-outline-dark full-cart' type="submit">
   <i className="bi-cart-fill me-1"></i>
