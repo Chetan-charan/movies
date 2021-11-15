@@ -39,16 +39,12 @@ export default function ButtonTheme() {
    
     const styles = {color: 'black', backgroundColor: 'white'}
     return <button style={styles} onClick={()=> {
-       if( value === 'light' ){
-        setState({backgroundColor: 'white'});
-        setColor(true);
+     
+        setState({backgroundColor: {value}});
         
-       }
-       else if(value === 'dark'){
-        setState({backgroundColor: 'black'});
-        setColor(false);
         
-       }
+        
+
        
     }} >{value}</button>;
     
