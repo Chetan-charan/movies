@@ -6,27 +6,11 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 const formValidationSchema = yup.object({
-  movie: yup.string()
-  .min(4,'Minimum 4 characters required!!')
-  .required('required'),   
-                
-  rating: yup.string()
-  .required('required')
-  .matches(/[1-9]$/i,'Only 1-10'),
-
-  summary: yup.string()
-  .min(20,'Minimum 20 characters required 😉')
-  .required('required'),
-
-  poster: yup.string()
-  .min(4,'Minimum 4 characters required 😃')
-  .required('required'),
-
-  trailer: yup.string()
-  .min(4,'Minimum 4 characters required 😄')
-  .required('required'),
-
-
+  movie: yup.string().min(4,'Minimum 4 characters required!!').required('required'),                 
+  rating: yup.number().min(0).max(10).required('required'),
+  summary: yup.string().min(20,'Minimum 20 characters required 😉').required('required'),
+  poster: yup.string().min(4,'Minimum 4 characters required 😃').required('required'),
+  trailer: yup.string().min(4,'Minimum 4 characters required 😄').required('required'),
 });
 
 export function EditMovie() {
