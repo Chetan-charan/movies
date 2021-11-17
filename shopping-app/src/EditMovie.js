@@ -2,51 +2,122 @@ import { useState,useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useHistory,useParams } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
+const formValidationSchema = yup.object({
+  movie: yup.string()
+  .min(4,'Minimum 4 characters required!!')
+  .required('required'),   
+                
+  rating: yup.string()
+  .required('required')
+  .matches(/[1-9]$/i,'Only 1-10'),
+
+  summary: yup.string()
+  .min(20,'Minimum 20 characters required 😉')
+  .required('required'),
+
+  poster: yup.string()
+  .min(4,'Minimum 4 characters required 😃')
+  .required('required'),
+
+  trailer: yup.string()
+  .min(4,'Minimum 4 characters required 😄')
+  .required('required'),
+
+
+});
 
 export function EditMovie() {
 
-  const [Name, setMovie] = useState('');
-  const [Rating, setRating] = useState('');
-  const [summary, setDesc] = useState('');
-  const [poster, setPic] = useState('');
-  const [trailer, setTrailer] = useState('');
+  const [editmovie,setEditMovie] = useState(null);
+
+  
   const { id } = useParams();
-  const history = useHistory();
-  const styles = { display: 'flex', flexDirection: 'column', gap: '10px', width: '40%', margin: '25px' };
+  
+
+  
 
   useEffect(() => {
     fetch(`https://6166c4e013aa1d00170a670a.mockapi.io/movies/${id}`)
     .then((data) => data.json())
-    .then((mv) => {
-      setMovie(mv.Name);
-      setRating(mv.Rating);
-      setDesc(mv.summary);
-      setPic(mv.poster);
-      setTrailer(mv.trailer);
-    })
-  },[]);
+    .then((mv) => setEditMovie(mv));
+  },[id])
+
+  return editmovie ? <UpdateMovie editmovie={ editmovie } /> : '';
+
+}
 
 
-  return <div style={styles}>
-    <TextField value={Name} onChange={(event) => setMovie(event.target.value)} id="standard-basic"  variant="standard" />
-    <TextField value={poster} onChange={(event) => setPic(event.target.value)} id="standard-basic"  variant="standard" />
-    <TextField value={Rating} onChange={(event) => setRating(event.target.value)} id="standard-basic" variant="standard" />
-    <TextField value={summary} onChange={(event) => setDesc(event.target.value)} id="standard-basic"  variant="standard" />
-    <TextField value={trailer} onChange={(event) => setTrailer(event.target.value)} id="standard-basic"  variant="standard" />
-    <Button onClick={() => { 
-        const editMovie = { Name, Rating, summary, poster, trailer }
+function UpdateMovie({ editmovie }){
+  const history = useHistory();
+  const { id } = useParams();
+
+  const {handleSubmit,handleChange,handleBlur,errors,touched,values} = useFormik(    
+    {initialValues:  {movie: editmovie.movie,rating: editmovie.rating,summary: editmovie.summary,poster: editmovie.poster,trailer: editmovie.trailer} ,
+    validationSchema: formValidationSchema,
     
-      fetch(`https://6166c4e013aa1d00170a670a.mockapi.io/movies/${id}`,
-      {
-        method:'PUT',headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(editMovie)
-    }).then(() => history.push('/movieList'))
+    onSubmit: (values) => {
+        console.log('onSubmit',values);
 
+        fetch(`https://6166c4e013aa1d00170a670a.mockapi.io/movies/${id}`,{method: 'PUT',body: JSON.stringify(values),headers: {
+          'Content-Type': 'application/json'
+        },}).then(() => history.push('/movies'));
       
-    }} variant="outlined">Save Movie</Button>
-  </div>;
+    }
+})
+
+    return  <form onSubmit={handleSubmit}>
+    <div className='add-fields'>
+
+    <TextField   name='movie'
+    onBlur={handleBlur} 
+    helperText={errors.movie && touched.movie && errors.movie} 
+    value={values.movie}  
+    onChange={handleChange} 
+    id="movie" 
+    label="Movie" 
+    variant="standard" />
+
+    <TextField   name='rating'  
+    onBlur={handleBlur} 
+    value={values.rating}
+    helperText={errors.rating && touched.rating && errors.rating} 
+    onChange={handleChange} 
+    id="standard-basic"
+    label='rating'  
+    variant="standard" />
+
+    <TextField  name='summary' 
+    onBlur={handleBlur}   
+    value={values.summary}
+    helperText={errors.summary && touched.summary && errors.summary}
+    onChange={handleChange}
+    id="standard-basic" 
+    label="Summary" 
+    variant="standard" />
+
+    <TextField  name='poster'  
+    value={values.poster}
+    onBlur={handleBlur}   
+    helperText={errors.poster && touched.poster && errors.poster}
+    onChange={handleChange} 
+    id="standard-basic" 
+    label="Poster url" 
+    variant="standard" />
+
+    <TextField  name='trailer'
+    value={values.trailer} 
+    helperText={errors.trailer && touched.trailer && errors.trailer}
+    onBlur={handleBlur}   
+    onChange={handleChange} 
+    id="standard-basic" 
+    label="Trailer url" 
+    variant="standard" />
+
+    <Button type='submit' variant="outlined">Save Movie</Button>
+    </div>
+    </form> 
 
 }

@@ -24,12 +24,12 @@ export function MovieList() {
 
   return <div className='movi-list'>
 
-    {movies.map(({ Name, poster, Rating, summary,id },index) => <Movie
-      Name={Name}
+    {movies.map(({ movie, poster, rating, summary,id },index) => <Movie
+      movie={movie}
       poster={poster}
-      Rating={Rating}
+      rating={rating}
       summary={summary}
-      key={Name}
+      key={movie}
       id={id} 
       deleteButton= {<IconButton onClick={
         ()=>{

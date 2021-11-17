@@ -14,12 +14,12 @@ export function MovieDetails() {
     fetch(`https://6166c4e013aa1d00170a670a.mockapi.io/movies/${id}`)
     .then((data) => data.json())
     .then(mv => setMovie(mv))
-  } ,[]);
+  } ,[id]);
 
   const history = useHistory();
 
   return <div>
-    <h1 style={styles}> {movie.Name}</h1>
+    <h1 style={styles}> {movie.movie}</h1>
 
     <p style={styles}>{movie.summary}</p>
     <iframe style={styles} width="900" height="506" src={movie.trailer} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

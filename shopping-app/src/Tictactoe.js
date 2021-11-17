@@ -9,7 +9,7 @@ export function Tictactoe() {
   const [isXTurn, setIsXTurn] = useState(true);
   const { width, height } = useWindowSize();
 
-
+  
   const decideWinner = (board) => {
     const lines = [
       [0, 1, 2],
@@ -29,8 +29,8 @@ export function Tictactoe() {
     }
     return null;
   };
-
-  const winner = decideWinner(boardVal);
+  
+ const winner = decideWinner(boardVal);
 
   const handleClick = (ind) => {
 

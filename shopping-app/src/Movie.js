@@ -6,8 +6,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import InfoIcon from '@mui/icons-material/Info';
 
 
-export function Movie({ Name, poster, Rating, summary, id, deleteButton,editButton }) {
-  const styles = { color: Rating > 8 ? 'green' : 'crimson', fontWeight: 'bold',fontSize: '19px'};
+export function Movie({ movie, poster, rating, summary, id, deleteButton,editButton }) {
+  const styles = { color: rating > 8 ? 'green' : 'crimson', fontWeight: 'bold',fontSize: '19px'};
   const [show, setShow] = useState(false);
   const history = useHistory();
   const summaryStyles = {
@@ -16,12 +16,12 @@ export function Movie({ Name, poster, Rating, summary, id, deleteButton,editButt
   return (<div className="one-movi">
    
     <div>
-      <img className="movie-poster" src={poster} alt={Name} />
+      <img className="movie-poster" src={poster} alt={movie} />
     </div>
     <div className="content">
       <div className='mv'>
-      <p className='content-movie'>{Name}  <InfoIcon  style={{marginLeft: '6px'}} className='info-button' onClick={() => setShow(!show)}></InfoIcon></p>
-      <p style={styles}>⭐ {Rating}</p>
+      <p className='content-movie'>{movie}  <InfoIcon  style={{marginLeft: '6px'}} className='info-button' onClick={() => setShow(!show)}></InfoIcon></p>
+      <p style={styles}>⭐ {rating}</p>
       </div> 
       <div className='mv'>
       <Counter /> {deleteButton} {editButton}
