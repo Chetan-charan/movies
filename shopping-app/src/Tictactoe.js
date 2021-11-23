@@ -25,6 +25,8 @@ export function Tictactoe() {
       let [a, b, c] = lines[i];
       if (boardVal[a] === boardVal[b] && boardVal[b] === boardVal[c] && boardVal[a] !== null) {
         setWinner(boardVal[a]);
+      }else{
+        setWinner(null)
       }
     }
  
