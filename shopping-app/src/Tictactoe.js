@@ -1,16 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useWindowSize from 'react-use/lib/useWindowSize';
 import Confetti from 'react-confetti';
 import Button from '@mui/material/Button';
 
 export function Tictactoe() {
  
-  const [boardVal, setBoardVal] = useState([null, null, null, null, null, null, null, null, null]);
-  const [isXTurn, setIsXTurn] = useState(true);
+  const [boardVal, setBoardVal] = useState([null, null, null, null, null, null, null, null, null]);   //setting inital board values to null
+  const [isXTurn, setIsXTurn] = useState(true);                                                       //start with x turn as true
   const { width, height } = useWindowSize();
+  const [winner,setWinner] = useState(null);
 
-  
-  const decideWinner = (board) => {
+  useEffect(()=> {                       //whenever board value changes useeffect will run and if winner is there, set winner to the value
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -23,14 +23,17 @@ export function Tictactoe() {
     ];
     for (var i = 0; i < lines.length; i++) {
       let [a, b, c] = lines[i];
-      if (board[a] === board[b] && board[b] === board[c] && board[a] !== null) {
-        return board[a];
+      if (boardVal[a] === boardVal[b] && boardVal[b] === boardVal[c] && boardVal[a] !== null) {
+        setWinner(boardVal[a]);
       }
     }
-    return null;
-  };
+ 
   
- const winner = decideWinner(boardVal);
+  },[boardVal])
+
+
+  
+
 
   const handleClick = (ind) => {
 
@@ -53,7 +56,7 @@ export function Tictactoe() {
       <h2>Choose your Letter ?</h2>
       <div onClick={() => {
         if (!(boardVal.includes('X') || boardVal.includes('O'))) {
-          setIsXTurn(true);
+          setIsXTurn(true);                                               //choice box to set turn to x when clicked
         }
       }} className='game-box choice-box'>X</div>
       <div onClick={() => {
@@ -65,14 +68,16 @@ export function Tictactoe() {
     </div>
 
     <div className='full-game'>
-      <h5>{isXTurn ? 'X' : 'O'}'s Turn :</h5>
+
+      <h5>{isXTurn ? 'X' : 'O'}'s Turn :</h5>                     
+
       <div className='board'>
         {boardVal.map((board, index) => <GameBox val={board} onPlayerClick={() => handleClick(index)} />)}
       </div>
 
       {winner ? <h3 style={{marginTop: '5px'}}>Winner is: {winner}</h3> : ''}
       
-     {!(boardVal.includes(null))||(winner) ?  <Button style={{marginTop: '10px'}} variant="contained" onClick={() => {
+     { !(boardVal.includes(null)) || (winner) ?  <Button style={{marginTop: '10px'}} variant="contained" onClick={() => {
         setBoardVal([null, null, null, null, null, null, null, null, null]);
       }}>Restart</Button> : ''}
 
@@ -80,6 +85,7 @@ export function Tictactoe() {
   </div>;
 
 }
+
 function GameBox({ onPlayerClick, val }) {
   // const [value,setVal] = useState(null);
   const styles = { color: 'green' };
