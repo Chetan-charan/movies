@@ -25,13 +25,17 @@ export function Tictactoe() {
       let [a, b, c] = lines[i];
       if (boardVal[a] === boardVal[b] && boardVal[b] === boardVal[c] && boardVal[a] !== null) {
         setWinner(boardVal[a]);
+       
+        console.log('from use effect..'+winner);
+        break;
       }else{
-        setWinner(null)
+        setWinner(null);
       }
+      
     }
- 
+    
   
-  },[boardVal])
+  },[boardVal,winner])
 
 
   
@@ -89,7 +93,7 @@ export function Tictactoe() {
 }
 
 function GameBox({ onPlayerClick, val }) {
-  // const [value,setVal] = useState(null);
+  
   const styles = { color: 'green' };
   return <div onClick={onPlayerClick} style={styles} className='game-box'>{val}</div>;
 }
