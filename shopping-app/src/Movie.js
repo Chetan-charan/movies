@@ -6,7 +6,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import InfoIcon from '@mui/icons-material/Info';
 
 
-export function Movie({ movie, poster, rating, summary, _id, deleteButton,editButton }) {
+export function Movie({ movie, poster, rating, summary, id, deleteButton,editButton }) {
   const styles = { color: rating > 8 ? 'green' : 'crimson', fontWeight: 'bold',fontSize: '19px'};
   const [show, setShow] = useState(false);
   const history = useHistory();
@@ -30,7 +30,7 @@ export function Movie({ movie, poster, rating, summary, _id, deleteButton,editBu
       <IconButton >
       <KeyboardArrowDownIcon color="primary" onClick={() => {
         setShow(show ? false : true)
-        history.push('/movieInfo/'+_id);
+        history.push('/movieInfo/'+id);
         }} />
       </IconButton>
      </div> 

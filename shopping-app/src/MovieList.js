@@ -33,6 +33,7 @@ export function MovieList() {
       rating={rating}
       summary={summary}
       key={_id}
+      id={_id}
       deleteButton= {<IconButton onClick={
         ()=>{
             fetch(`${API_URL}/movies/${_id}`,{
