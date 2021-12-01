@@ -1,7 +1,7 @@
 
 import './App1.css';
-import { useState } from 'react';
-import { Switch, Route } from "react-router-dom";
+import { useReducer, useState } from 'react';
+import { Switch, Route, useHistory } from "react-router-dom";
 import { AddColor} from './AddColor';
 import { AddMovie } from './AddMovie';
 import { MovieList } from './MovieList';
@@ -15,8 +15,24 @@ import Toolbar from '@mui/material/Toolbar';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Button from '@mui/material/Button';
-import { useHistory } from 'react-router-dom';
+import { Food } from './Food';
 
+const reducer = (state, action) => {
+
+  switch (action.type) {
+    case "increment":
+      // always return new state of the store
+      return { ...state,count: state.count + 1 };
+    case "decrement":
+      return { ...state, count: state.count - 1 };
+    case "reset":
+      return { ...state, count: action.payload };
+    case "changecolor":
+      return { ...state, color: action.payload };
+    default:
+      return state;
+  }
+};
 
 function App() {
   const history = useHistory();
@@ -28,9 +44,10 @@ function App() {
     },
   });
 
+  const initialState = {color: 'gold',count: 10};
+  const [state,dispatch] = useReducer(reducer,initialState);
 
   return (
-  
 
     <ThemeProvider theme={theme}>
     <div className="App">
@@ -42,6 +59,7 @@ function App() {
   <Button onClick={()=> history.push('/movieList') } variant="text" color='inherit'>Movie List</Button>
   <Button onClick={()=> history.push('/addColor') } variant="text" color='inherit'>Color Box</Button>
   <Button onClick={()=> history.push('/tictactoe') } variant="text" color='inherit'>Tic-Tac-Toe</Button>
+  <Button onClick={()=> history.push('/foodsearch') } variant="text" color='inherit'>Foods</Button>
   <Button 
   startIcon = {themeMode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}    //toggle icon for theme
   style={{marginLeft: 'auto'}} 
@@ -60,16 +78,19 @@ function App() {
         <MovieList />
         </Route>
         <Route path="/addColor">
-        <AddColor />
+        <AddColor state={state} dispatch={dispatch} />
         </Route>
-        <Route path="/movieList/:id">
+        <Route path="/movieInfo/:id">
         <MovieDetails />
         </Route>
         <Route path="/editMovie/:id">
         <EditMovie/>
         </Route>
         <Route path="/tictactoe">
-        <Tictactoe />
+        <Tictactoe state={state} />
+        </Route>
+        <Route path="/foodsearch">
+        <Food />
         </Route>
         {/* <Route path='**'>
           <NotFound />

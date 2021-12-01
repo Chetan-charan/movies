@@ -5,8 +5,9 @@ import { useHistory,useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+const API_URL = "https://b28wd-moviesapp.herokuapp.com"
 const formValidationSchema = yup.object({
-  movie: yup.string().min(4,'Minimum 4 characters required!!').required('required'),                 
+  name: yup.string().min(4,'Minimum 4 characters required!!').required('required'),                 
   rating: yup.number().min(0).max(10).required('required'),
   summary: yup.string().min(20,'Minimum 20 characters required 😉').required('required'),
   poster: yup.string().min(4,'Minimum 4 characters required 😃').required('required'),
@@ -16,7 +17,7 @@ const formValidationSchema = yup.object({
 export function EditMovie() {
 
   const [editmovie,setEditMovie] = useState(null);
-
+  
   
   const { id } = useParams();
   
@@ -24,12 +25,12 @@ export function EditMovie() {
   
 
   useEffect(() => {
-    fetch(`https://6166c4e013aa1d00170a670a.mockapi.io/movies/${id}`)
+    fetch(`${API_URL}/movies/${id}`)
     .then((data) => data.json())
     .then((mv) => setEditMovie(mv));
   },[id])
 
-  return editmovie ? <UpdateMovie editmovie={ editmovie } /> : '';
+  return editmovie ? <UpdateMovie editmovie={ editmovie } /> : '';   //if editmovie is true value, render update movie component
 
 }
 
@@ -37,15 +38,15 @@ export function EditMovie() {
 function UpdateMovie({ editmovie }){
   const history = useHistory();
   const { id } = useParams();
-
+  console.log(editmovie)
   const {handleSubmit,handleChange,handleBlur,errors,touched,values} = useFormik(    
-    {initialValues:  {movie: editmovie.movie,rating: editmovie.rating,summary: editmovie.summary,poster: editmovie.poster,trailer: editmovie.trailer} ,
+    {initialValues:  {name: editmovie.name,rating: editmovie.rating,summary: editmovie.summary,poster: editmovie.poster,trailer: editmovie.trailer} ,
     validationSchema: formValidationSchema,
     
     onSubmit: (values) => {
         console.log('onSubmit',values);
 
-        fetch(`https://6166c4e013aa1d00170a670a.mockapi.io/movies/${id}`,{method: 'PUT',body: JSON.stringify(values),headers: {
+        fetch(`${API_URL}/movies/${id}`,{method: 'PUT',body: JSON.stringify(values),headers: {
           'Content-Type': 'application/json'
         },}).then(() => history.push('/movies'));
       
@@ -55,13 +56,13 @@ function UpdateMovie({ editmovie }){
     return  <form onSubmit={handleSubmit}>
     <div className='add-fields'>
 
-    <TextField   name='movie'
+    <TextField   name='name'
     onBlur={handleBlur} 
-    helperText={errors.movie && touched.movie && errors.movie} 
-    value={values.movie}  
+    helperText={errors.name && touched.name && errors.name} 
+    value={values.name}  
     onChange={handleChange} 
-    id="movie" 
-    label="Movie" 
+    id="name" 
+    label="name" 
     variant="standard" />
 
     <TextField   name='rating'  

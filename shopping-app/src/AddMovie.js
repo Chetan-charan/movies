@@ -4,6 +4,8 @@ import {useHistory} from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+const API_URL = "https://b28wd-moviesapp.herokuapp.com"
+
 const formValidationSchema = yup.object({
   movie: yup.string().min(4,'Minimum 4 characters required!!').required('required'),                 
   rating: yup.number().min(0).max(10).required('required'),
@@ -23,7 +25,7 @@ export function AddMovie() {
     onSubmit: (values) => {
         console.log('onSubmit',values);
 
-        fetch('https://6166c4e013aa1d00170a670a.mockapi.io/movies/',{method: 'POST',body: JSON.stringify(values),headers: {
+        fetch(`${API_URL}/movies/`,{method: 'POST',body: JSON.stringify(values),headers: {
           'Content-Type': 'application/json'
         },}).then(() => history.push('/movies'));
       

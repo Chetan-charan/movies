@@ -1,5 +1,5 @@
 [{
-      "id": '100',
+      "id": 100,
       "movie": 'Inception',
       "poster": 'https://m.media-amazon.com/images/M/MV5BMTM0MjUzNjkwMl5BMl5BanBnXkFtZTcwNjY0OTk1Mw@@._V1_.jpg',
       "rating": 8.3,
@@ -7,7 +7,7 @@
       "trailer": 'https://www.youtube.com/embed/YoHD9XEInc0'
     },
     {
-      id: '101',
+      id: 101,
       movie: 'Once Upon a Time... In Hollywood',
       poster: 'https://m.media-amazon.com/images/M/MV5BOTg4ZTNkZmUtMzNlZi00YmFjLTk1MmUtNWQwNTM0YjcyNTNkXkEyXkFqcGdeQXVyNjg2NjQwMDQ@._V1_UY1200_CR90,0,630,1200_AL_.jpg',
       rating: 7.6,

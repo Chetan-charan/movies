@@ -3,13 +3,14 @@ import useWindowSize from 'react-use/lib/useWindowSize';
 import Confetti from 'react-confetti';
 import Button from '@mui/material/Button';
 
-export function Tictactoe() {
+export function Tictactoe({state}) {
  
   const [boardVal, setBoardVal] = useState([null, null, null, null, null, null, null, null, null]);   //setting inital board values to null
   const [isXTurn, setIsXTurn] = useState(true);                                                       //start with x turn as true
   const { width, height } = useWindowSize();
   const [winner,setWinner] = useState(null);
-
+  const [xWins,setXWins] = useState(0);
+  const [oWins,setOWins] = useState(0);
   useEffect(()=> {                       //whenever board value changes useeffect will run and if winner is there, set winner to the value
     const lines = [
       [0, 1, 2],
@@ -38,6 +39,14 @@ export function Tictactoe() {
   },[boardVal,winner])
 
 
+  useEffect(() => {                            //to update leader board when a winner is there
+    if(winner==='X'){
+      setXWins(xWins => xWins+1);
+    }else if(winner==='O'){
+        setOWins(oWins => oWins+1);
+    }
+  },[winner]);
+
   
 
 
@@ -52,7 +61,8 @@ export function Tictactoe() {
     }
 
   };
-  
+
+  const pointsStyle = { color: state.color }
   return <div className='game'>
     {winner ? <Confetti gravity={0.05}
       width={width}
@@ -73,12 +83,14 @@ export function Tictactoe() {
       }} className='game-box choice-box'>O</div>
     </div>
 
+    <div style={pointsStyle}><h4>X : {xWins}</h4><h4>O : {oWins} </h4></div> 
+
     <div className='full-game'>
 
       <h5>{isXTurn ? 'X' : 'O'}'s Turn :</h5>                     
 
       <div className='board'>
-        {boardVal.map((board, index) => <GameBox val={board} onPlayerClick={() => handleClick(index)} />)}
+        {boardVal.map((board, index) => <GameBox val={board} key={index} onPlayerClick={() => handleClick(index)} />)}
       </div>
 
       {winner ? <h3 style={{marginTop: '5px'}}>Winner is: {winner}</h3> : ''}

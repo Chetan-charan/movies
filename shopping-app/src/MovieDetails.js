@@ -6,12 +6,13 @@ import {useState, useEffect} from 'react';
 
 export function MovieDetails() {
   const { id } = useParams(); 
+  const API_URL = "https://b28wd-moviesapp.herokuapp.com"
   const styleButton = {marginLeft: '2rem',marginTop: '1rem', padding: '5px',marginBottom: '1rem'}
   const styles = { marginLeft: '2rem', width: '60%'};
   const [movie,setMovie] = useState({});
-
+  console.log(id)
   useEffect(() => {
-    fetch(`https://6166c4e013aa1d00170a670a.mockapi.io/movies/${id}`)
+    fetch(`${API_URL}/movies/${id}`)
     .then((data) => data.json())
     .then(mv => setMovie(mv))
   } ,[id]);
